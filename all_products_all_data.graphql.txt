@@ -1,0 +1,108 @@
+query AllProducts($limit: Int!, $offset: Int!) {
+  product(limit: $limit, offset: $offset) {
+    id
+    webshopUrlPrimary
+    urlPrimary
+    type
+    duration
+    durationType
+    company {
+      businessName
+    }
+    openingHours {
+      open
+      openFrom
+      openTo
+      weekday
+    }
+    postalAddresses {
+      location
+      postalCode
+      streetName
+      city
+    }
+    productAvailableMonths {
+      month
+    }
+    productInformations {
+      description
+      language
+      name
+      url
+      webshopUrl
+    }
+    productImages {
+      copyright
+      filename
+      altText
+      largeUrl
+      originalUrl
+      thumbnailUrl
+      coverPhoto
+      orientation
+      originalWidth
+      originalHeight
+    }
+    productPricings {
+      toPrice
+      fromPrice
+      pricingUnit
+      pricingType
+    }
+    productTags {
+      tag
+    }
+    productTargetGroups {
+      targetGroupId
+    }
+    productVideos {
+      title
+      url
+    }
+    accessible
+    contactDetails {
+      email
+      phone
+    }
+    productAvailabilities {
+      endDate
+      startDate
+    }
+    productCapacities {
+      max
+      min
+    }
+    productCertificates {
+      certificateDetails {
+        description
+        name
+        logoUrl
+        websiteUrl
+      }
+      certificate
+    }
+    updatedAt
+    businessHours {
+      default {
+        closes
+        open
+        opens
+        weekday
+      }
+      exceptions {
+        start
+        end
+        openingHours {
+          closes
+          date
+          open
+          opens
+          weekday
+        }
+      }
+    }
+    productAvailabilityLanguages {
+      language
+    }
+  }
+}
