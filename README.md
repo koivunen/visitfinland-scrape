@@ -11,9 +11,19 @@ Imports [Visit Finland](https://datahub.visitfinland.com/) (geo)data for [QGIS](
  
 Look at vscode run json for step 1 (dump all from graphql to json file) and step 2 (store to db).
 
+### TODO
+
+ - Investigate duplicate ids in query, maybe querying wrong!!!
+ - Extract more fields to columns (especially tags)
+ - Continuous updating (kind of works already)
+ - Schema from GraphQL instead
+ - DB indexes? *not needed for now*
+
 ### License
 
-MIT
+This work is licensed under the terms of the [MIT](https://opensource.org/licenses/MIT) license.  
+
+Copyright (c) 2026 University of Turku, Lauri Koivunen.
 
 ### Disclaimer
 

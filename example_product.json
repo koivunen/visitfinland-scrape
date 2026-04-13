@@ -1,0 +1,246 @@
+{
+  "id": "1f96025a-8b31-4e0d-bfc6-296ee21f22ea",
+  "type": "accommodation",
+  "company": {
+    "businessName": "Huittisten Ratsastuskeskus"
+  },
+  "duration": "",
+  "updatedAt": "2023-08-14T11:33:45.96453+00:00",
+  "accessible": null,
+  "urlPrimary": "https://www.rekikoski.fi/en/accommodation",
+  "productTags": [
+    {
+      "tag": "bed_breakfast_apartments_guest_house"
+    }
+  ],
+  "durationType": "",
+  "openingHours": [
+    {
+      "open": true,
+      "openTo": null,
+      "weekday": "monday",
+      "openFrom": null
+    },
+    {
+      "open": true,
+      "openTo": null,
+      "weekday": "tuesday",
+      "openFrom": null
+    },
+    {
+      "open": true,
+      "openTo": null,
+      "weekday": "wednesday",
+      "openFrom": null
+    },
+    {
+      "open": true,
+      "openTo": null,
+      "weekday": "thursday",
+      "openFrom": null
+    },
+    {
+      "open": true,
+      "openTo": null,
+      "weekday": "friday",
+      "openFrom": null
+    },
+    {
+      "open": true,
+      "openTo": null,
+      "weekday": "saturday",
+      "openFrom": null
+    },
+    {
+      "open": true,
+      "openTo": null,
+      "weekday": "sunday",
+      "openFrom": null
+    }
+  ],
+  "businessHours": {
+    "default": [
+      {
+        "open": true,
+        "opens": null,
+        "closes": null,
+        "weekday": "monday"
+      },
+      {
+        "open": true,
+        "opens": null,
+        "closes": null,
+        "weekday": "tuesday"
+      },
+      {
+        "open": true,
+        "opens": null,
+        "closes": null,
+        "weekday": "wednesday"
+      },
+      {
+        "open": true,
+        "opens": null,
+        "closes": null,
+        "weekday": "thursday"
+      },
+      {
+        "open": true,
+        "opens": null,
+        "closes": null,
+        "weekday": "friday"
+      },
+      {
+        "open": true,
+        "opens": null,
+        "closes": null,
+        "weekday": "saturday"
+      },
+      {
+        "open": true,
+        "opens": null,
+        "closes": null,
+        "weekday": "sunday"
+      }
+    ],
+    "exceptions": []
+  },
+  "productImages": [
+    {
+      "altText": "Majoitushuone 1hh",
+      "filename": "c1529320-3a90-11ee-807b-e549c99fd69d.jpeg",
+      "largeUrl": "https://cdn-datahub.visitfinland.com/images/c1529320-3a90-11ee-807b-e549c99fd69d.jpeg?s=1920",
+      "copyright": "Krista Rekikoski",
+      "coverPhoto": true,
+      "orientation": "landscape",
+      "originalUrl": "https://cdn-datahub.visitfinland.com/images/c1529320-3a90-11ee-807b-e549c99fd69d.jpeg",
+      "thumbnailUrl": "https://cdn-datahub.visitfinland.com/images/c1529320-3a90-11ee-807b-e549c99fd69d.jpeg?s=240",
+      "originalWidth": 4032,
+      "originalHeight": 3024
+    },
+    {
+      "altText": "Majoitushuone 1hh",
+      "filename": "75f01000-3a91-11ee-807b-e549c99fd69d.jpeg",
+      "largeUrl": "https://cdn-datahub.visitfinland.com/images/75f01000-3a91-11ee-807b-e549c99fd69d.jpeg?s=1920",
+      "copyright": "Krista Rekikoski",
+      "coverPhoto": false,
+      "orientation": "landscape",
+      "originalUrl": "https://cdn-datahub.visitfinland.com/images/75f01000-3a91-11ee-807b-e549c99fd69d.jpeg",
+      "thumbnailUrl": "https://cdn-datahub.visitfinland.com/images/75f01000-3a91-11ee-807b-e549c99fd69d.jpeg?s=240",
+      "originalWidth": 5760,
+      "originalHeight": 3840
+    },
+    {
+      "altText": "Koitto kokoustila",
+      "filename": "20510c10-3a93-11ee-807b-e549c99fd69d.jpeg",
+      "largeUrl": "https://cdn-datahub.visitfinland.com/images/20510c10-3a93-11ee-807b-e549c99fd69d.jpeg?s=1920",
+      "copyright": "Krista Rekikoski",
+      "coverPhoto": false,
+      "orientation": "landscape",
+      "originalUrl": "https://cdn-datahub.visitfinland.com/images/20510c10-3a93-11ee-807b-e549c99fd69d.jpeg",
+      "thumbnailUrl": "https://cdn-datahub.visitfinland.com/images/20510c10-3a93-11ee-807b-e549c99fd69d.jpeg?s=240",
+      "originalWidth": 5184,
+      "originalHeight": 3456
+    },
+    {
+      "altText": "Koitto saunatila",
+      "filename": "43e022b0-3a93-11ee-807b-e549c99fd69d.jpeg",
+      "largeUrl": "https://cdn-datahub.visitfinland.com/images/43e022b0-3a93-11ee-807b-e549c99fd69d.jpeg?s=1920",
+      "copyright": "Krista Rekikoski",
+      "coverPhoto": false,
+      "orientation": "landscape",
+      "originalUrl": "https://cdn-datahub.visitfinland.com/images/43e022b0-3a93-11ee-807b-e549c99fd69d.jpeg",
+      "thumbnailUrl": "https://cdn-datahub.visitfinland.com/images/43e022b0-3a93-11ee-807b-e549c99fd69d.jpeg?s=240",
+      "originalWidth": 1600,
+      "originalHeight": 1200
+    }
+  ],
+  "productVideos": [],
+  "contactDetails": [
+    {
+      "email": "toimisto@rekikoski.fi",
+      "phone": "+358 02 567 797"
+    }
+  ],
+  "postalAddresses": [
+    {
+      "city": "Huittinen",
+      "location": "(61.1825355,22.7297724)",
+      "postalCode": "32700",
+      "streetName": "Kivirannantie 240"
+    }
+  ],
+  "productPricings": [
+    {
+      "toPrice": null,
+      "fromPrice": null,
+      "pricingType": "unknown",
+      "pricingUnit": null
+    }
+  ],
+  "productCapacities": [],
+  "webshopUrlPrimary": null,
+  "productCertificates": [],
+  "productInformations": [
+    {
+      "url": "https://www.rekikoski.fi/en/accommodation",
+      "name": "Bed & Breakfast Rekikoski Accommodation",
+      "language": "en",
+      "webshopUrl": null,
+      "description": "Our accommodation facilities are clean and smoke-free.\n\nIn the main building we have four twin rooms (2 people) and a large communal living room. There is also a small kitchen, communal sauna and shower facilities and 2 separate toilets. The accommodation in the main building is mainly used by groups.\n\nIn our terraced accommodation we have five twin rooms (2 people), and a larger suite in the end of the building. All rooms have their own shower, WC and mini kitchen and ten single room. All these rooms have own shower, WC, refrigerator and internet."
+    }
+  ],
+  "productTargetGroups": [
+    {
+      "targetGroupId": "b2c"
+    },
+    {
+      "targetGroupId": "b2b"
+    }
+  ],
+  "productAvailabilities": [
+    {
+      "endDate": null,
+      "startDate": null
+    }
+  ],
+  "productAvailableMonths": [
+    {
+      "month": "january"
+    },
+    {
+      "month": "february"
+    },
+    {
+      "month": "march"
+    },
+    {
+      "month": "april"
+    },
+    {
+      "month": "may"
+    },
+    {
+      "month": "june"
+    },
+    {
+      "month": "july"
+    },
+    {
+      "month": "august"
+    },
+    {
+      "month": "september"
+    },
+    {
+      "month": "october"
+    },
+    {
+      "month": "november"
+    },
+    {
+      "month": "december"
+    }
+  ],
+  "productAvailabilityLanguages": []
+}

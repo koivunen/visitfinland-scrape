@@ -10,6 +10,8 @@ from typing import Any, Dict, Optional, Tuple
 from dotenv import load_dotenv
 import psycopg
 
+LANGUAGE_PREFERENCE_ORDER: Tuple[str, ...] = ("en", "fi")
+
 
 def die(msg: str, code: int = 1) -> None:
     print(f"ERROR: {msg}", file=sys.stderr)
@@ -48,20 +50,35 @@ def conninfo_from_env() -> str:
     password = os.getenv("PGPASSWORD")
     sslmode = os.getenv("PGSSLMODE")
 
-    missing = [k for k, v in [("PGHOST", host), ("PGDATABASE", db), ("PGUSER", user), ("PGPASSWORD", password)] if not v]
+    missing = [
+        k
+        for k, v in [("PGHOST", host), ("PGDATABASE",
+                                        db), ("PGUSER",
+                                              user), ("PGPASSWORD", password)]
+        if not v
+    ]
     if missing:
         die(f"Missing required env vars: {', '.join(missing)}")
 
-    parts = [f"host={host}", f"port={port}", f"dbname={db}", f"user={user}", f"password={password}"]
+    parts = [
+        f"host={host}", f"port={port}", f"dbname={db}", f"user={user}",
+        f"password={password}"
+    ]
     if sslmode:
         parts.append(f"sslmode={sslmode}")
     return " ".join(parts)
 
 
-def pick_name(product: Dict[str, Any], prefer_langs: Tuple[str, ...] = ("fi", "en")) -> Tuple[str, Optional[str]]:
+def pick_name(
+    product: Dict[str, Any],
+    prefer_langs: Optional[Tuple[str,
+                                 ...]] = None) -> Tuple[str, Optional[str]]:
     infos = product.get("productInformations") or []
     if not isinstance(infos, list):
         return "", None
+
+    if prefer_langs is None:
+        prefer_langs = LANGUAGE_PREFERENCE_ORDER
 
     def norm_lang(x: Any) -> str:
         return (x or "").strip().lower()
@@ -82,6 +99,37 @@ def pick_name(product: Dict[str, Any], prefer_langs: Tuple[str, ...] = ("fi", "e
             return name, pi.get("language")
 
     return "", None
+
+
+def pick_description(
+        product: Dict[str, Any],
+        prefer_langs: Optional[Tuple[str, ...]] = None) -> Optional[str]:
+    infos = product.get("productInformations") or []
+    if not isinstance(infos, list):
+        return None
+
+    if prefer_langs is None:
+        prefer_langs = LANGUAGE_PREFERENCE_ORDER
+
+    def norm_lang(x: Any) -> str:
+        return (x or "").strip().lower()
+
+    for lang in prefer_langs:
+        for pi in infos:
+            if not isinstance(pi, dict):
+                continue
+            desc = (pi.get("description") or "").strip()
+            if desc and norm_lang(pi.get("language")) == lang:
+                return desc
+
+    for pi in infos:
+        if not isinstance(pi, dict):
+            continue
+        desc = (pi.get("description") or "").strip()
+        if desc:
+            return desc
+
+    return None
 
 
 def parse_location_point(loc: Any) -> Optional[Tuple[float, float]]:
@@ -115,12 +163,12 @@ def extract_primary_address(product: Dict[str, Any]) -> Dict[str, Any]:
 def ensure_schema(conn: psycopg.Connection) -> None:
     with conn.cursor() as cur:
         cur.execute("CREATE EXTENSION IF NOT EXISTS postgis;")
-        cur.execute(
-            """
+        cur.execute("""
             CREATE TABLE IF NOT EXISTS public.products (
               product_id               text PRIMARY KEY,
               product_name             text NOT NULL,
               product_name_language    text,
+              description              text,
               company_business_name    text,
               product_type             text,
               webshop_url_primary      text,
@@ -134,7 +182,9 @@ def ensure_schema(conn: psycopg.Connection) -> None:
               raw                      jsonb NOT NULL,
               ingested_at              timestamptz NOT NULL DEFAULT now()
             );
-            """
+            """)
+        cur.execute(
+            "ALTER TABLE public.products ADD COLUMN IF NOT EXISTS description text;"
         )
         cur.execute(
             "CREATE INDEX IF NOT EXISTS products_location_gix ON public.products USING gist (location);"
@@ -155,34 +205,36 @@ def ensure_schema(conn: psycopg.Connection) -> None:
 
 UPSERT_SQL = """
 INSERT INTO public.products (
-  product_id,
-  product_name,
-  product_name_language,
-  company_business_name,
-  product_type,
-  webshop_url_primary,
-  url_primary,
-  accessible,
-  updated_at,
-  postal_code,
-  street_name,
-  city,
-  location,
-  raw
+    product_id,
+    product_name,
+    product_name_language,
+    description,
+    company_business_name,
+    product_type,
+    webshop_url_primary,
+    url_primary,
+    accessible,
+    updated_at,
+    postal_code,
+    street_name,
+    city,
+    location,
+    raw
 )
 VALUES (
-  %(product_id)s,
-  %(product_name)s,
-  %(product_name_language)s,
-  %(company_business_name)s,
-  %(product_type)s,
-  %(webshop_url_primary)s,
-  %(url_primary)s,
-  %(accessible)s,
-  %(updated_at)s,
-  %(postal_code)s,
-  %(street_name)s,
-  %(city)s,
+    %(product_id)s,
+    %(product_name)s,
+    %(product_name_language)s,
+    %(description)s,
+    %(company_business_name)s,
+    %(product_type)s,
+    %(webshop_url_primary)s,
+    %(url_primary)s,
+    %(accessible)s,
+    %(updated_at)s,
+    %(postal_code)s,
+    %(street_name)s,
+    %(city)s,
  CASE
   WHEN (%(lat)s::double precision) IS NULL OR (%(lon)s::double precision) IS NULL THEN NULL
   ELSE ST_SetSRID(
@@ -195,6 +247,7 @@ END,
 ON CONFLICT (product_id) DO UPDATE SET
   product_name           = EXCLUDED.product_name,
   product_name_language  = EXCLUDED.product_name_language,
+    description            = EXCLUDED.description,
   company_business_name  = EXCLUDED.company_business_name,
   product_type           = EXCLUDED.product_type,
   webshop_url_primary    = EXCLUDED.webshop_url_primary,
@@ -219,6 +272,8 @@ def build_row(product: Dict[str, Any]) -> Dict[str, Any]:
     if not name:
         die(f"Product {pid} has no productInformations.name")
 
+    description = pick_description(product)
+
     company = None
     comp = product.get("company")
     if isinstance(comp, dict):
@@ -236,14 +291,17 @@ def build_row(product: Dict[str, Any]) -> Dict[str, Any]:
         "product_id": pid,
         "product_name": name,
         "product_name_language": name_lang,
+        "description": description,
         "company_business_name": company,
         "product_type": product.get("type"),
         "webshop_url_primary": product.get("webshopUrlPrimary"),
         "url_primary": product.get("urlPrimary"),
         "accessible": product.get("accessible"),
         "updated_at": product.get("updatedAt"),
-        "postal_code": addr0.get("postalCode") if isinstance(addr0, dict) else None,
-        "street_name": addr0.get("streetName") if isinstance(addr0, dict) else None,
+        "postal_code":
+        addr0.get("postalCode") if isinstance(addr0, dict) else None,
+        "street_name":
+        addr0.get("streetName") if isinstance(addr0, dict) else None,
         "city": addr0.get("city") if isinstance(addr0, dict) else None,
         "lat": lat,
         "lon": lon,
@@ -252,11 +310,19 @@ def build_row(product: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Insert GraphQL product JSON directly into PostgreSQL.")
+    ap = argparse.ArgumentParser(
+        description="Insert GraphQL product JSON directly into PostgreSQL.")
     ap.add_argument("--file", help="Path to GraphQL JSON response file")
-    ap.add_argument("--stdin", action="store_true", help="Read JSON from STDIN")
-    ap.add_argument("--ensure-schema", action="store_true", help="Create table/indexes/extensions if missing")
-    ap.add_argument("--commit-every", type=int, default=500, help="Commit every N rows (0 commits only at end)")
+    ap.add_argument("--stdin",
+                    action="store_true",
+                    help="Read JSON from STDIN")
+    ap.add_argument("--ensure-schema",
+                    action="store_true",
+                    help="Create table/indexes/extensions if missing")
+    ap.add_argument("--commit-every",
+                    type=int,
+                    default=500,
+                    help="Commit every N rows (0 commits only at end)")
     args = ap.parse_args()
 
     payload = read_json(args.file, args.stdin)
@@ -266,7 +332,7 @@ def main() -> None:
     if not products:
         die('No products found in "data.product".')
         raise SystemExit(1)
-    
+
     conninfo = conninfo_from_env()
 
     with psycopg.connect(conninfo) as conn:
